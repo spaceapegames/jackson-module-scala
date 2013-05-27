@@ -48,7 +48,7 @@
 		<scala.version>2.10.0</scala.version>
 		<scala-lib.version>2.10.0</scala-lib.version>
 		<scala-plugin.version>3.1.0</scala-plugin.version>
-		<jackson.version>2.2.0-spaceape</jackson.version>
+		<jackson.version>2.2.1-spaceape-SNAPSHOT</jackson.version>
 	</properties>
 
 	<!-- Licensing -->
