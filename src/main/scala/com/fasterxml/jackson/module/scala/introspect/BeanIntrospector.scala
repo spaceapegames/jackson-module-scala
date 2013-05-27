@@ -56,7 +56,7 @@ object BeanIntrospector {
 
     lazy val hierarchy: Seq[Class[_]] = {
       def next(c: Class[_]): Seq[Class[_]] =
-        if (c==null) Nil
+        if (c == null) Nil
         else if (c == classOf[AnyRef]) Nil
         else next(c.getSuperclass) :+ c
       next(cls)
