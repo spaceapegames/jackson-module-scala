@@ -6,9 +6,10 @@ import org.scalatest.FlatSpec
 import org.scalatest.matchers.ShouldMatchers
 
 import com.fasterxml.jackson.module.scala.{DefaultScalaModule, JacksonModule}
-import com.fasterxml.jackson.annotation.{JsonTypeInfo, JsonInclude, JsonIgnoreProperties, JsonProperty}
+import com.fasterxml.jackson.annotation._
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.PropertyNamingStrategy
+import scala.reflect.BeanProperty
 
 case class ConstructorTestCaseClass(intValue: Int, stringValue: String)
 
@@ -32,8 +33,7 @@ case class GenericTestCaseClass[T](data: T)
 
 case class UnicodeNameCaseClass(`winning-id`: Int, name: String)
 
-object CaseClassWithCompanion {
-}
+object CaseClassWithCompanion
 
 case class CaseClassWithCompanion(intValue: Int)
 
@@ -51,8 +51,19 @@ case class NonNullCaseClass2(foo: String)
 
 case class MixedPropertyNameStyleCaseClass(camelCase: Int, snake_case: Int, alllower: Int, ALLUPPER: Int, anID: Int)
 
+class NonCaseWithBeanProperty {
+  @BeanProperty var id: Int = _
+  @BeanProperty var bar: String = _
+}
+
+case class InnerJavaEnum(fieldType: Field.Type)
+
+case class PrivateDefaultFields @JsonCreator() (@JsonProperty("firstName") private val firstName: String, @JsonProperty("lastName") lastName: String = "Freeman")
+
 @RunWith(classOf[JUnitRunner])
 class CaseClassSerializerTest extends SerializerTest with FlatSpec with ShouldMatchers {
+
+  case class NestedClass(field: String)
 
   def module = DefaultScalaModule
 
@@ -151,4 +162,25 @@ class CaseClassSerializerTest extends SerializerTest with FlatSpec with ShouldMa
     )
   }
 
+  it should "serialize a non-case class with @BeanProperty annotations" in {
+    val bean = new NonCaseWithBeanProperty
+    bean.id = 1
+    bean.bar = "foo"
+    serialize(bean) should (equal ("""{"id":1,"bar":"foo"}"""))
+  }
+
+  it should "serialize a nested case class" in {
+    val bean = NestedClass("nested")
+    serialize(bean) should (equal ("""{"field":"nested"}"""))
+  }
+
+  it should "serialize a case class containing an inner Java enum" in {
+    val result = serialize(InnerJavaEnum(Field.Type.TYPEA))
+    result should be ("""{"fieldType":"TYPEA"}""")
+  }
+
+  it should "serialize private fields annotated with @JsonProperty" in {
+    val result = serialize(PrivateDefaultFields("Gordon", "Biersch"))
+    result should be ("""{"firstName":"Gordon","lastName":"Biersch"}""")
+  }
 }
