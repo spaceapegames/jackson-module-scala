@@ -60,6 +60,22 @@ case class InnerJavaEnum(fieldType: Field.Type)
 
 case class PrivateDefaultFields @JsonCreator() (@JsonProperty("firstName") private val firstName: String, @JsonProperty("lastName") lastName: String = "Freeman")
 
+@JsonPropertyOrder(alphabetic = true)
+case class OrderedCaseClass() {
+  var b: String = "b"
+  var c: String = "c"
+  var a: String = "a"
+}
+
+@JsonPropertyOrder(alphabetic = true)
+case class OrderedConstructorCaseClass(
+  var b: String,
+  var c: String,
+  var a: String,
+  var d: Int = 0,
+  var e: Int = 0){
+}
+
 @RunWith(classOf[JUnitRunner])
 class CaseClassSerializerTest extends SerializerTest with FlatSpec with ShouldMatchers {
 
@@ -183,4 +199,17 @@ class CaseClassSerializerTest extends SerializerTest with FlatSpec with ShouldMa
     val result = serialize(PrivateDefaultFields("Gordon", "Biersch"))
     result should be ("""{"firstName":"Gordon","lastName":"Biersch"}""")
   }
+
+  it should "serialize fields in order with @JsonPropertyOrder" in {
+    val result = serialize(OrderedCaseClass())
+    result should be ("""{"a":"a","b":"b","c":"c"}""")
+  }
+
+  it should "serialize constructor fields in order with @JsonPropertyOrder" in {
+    var result = serialize(OrderedConstructorCaseClass("b","c","a",2))
+    result should be ("""{"b":"b","c":"c","a":"a","d":2,"e":0}""")
+    result = serialize(OrderedConstructorCaseClass("b","c","a",2,4))
+    result should be ("""{"b":"b","c":"c","a":"a","d":2,"e":4}""")
+  }
+
 }
