@@ -76,6 +76,12 @@ case class OrderedConstructorCaseClass(
   var e: Int = 0){
 }
 
+case class CaseClassWithIgnored(@JsonIgnore ignored: String, normal: String){
+
+  @JsonIgnore
+  val anotherIgnoredValue = "cheese"
+}
+
 @RunWith(classOf[JUnitRunner])
 class CaseClassSerializerTest extends SerializerTest with FlatSpec with ShouldMatchers {
 
@@ -212,4 +218,9 @@ class CaseClassSerializerTest extends SerializerTest with FlatSpec with ShouldMa
     result should be ("""{"b":"b","c":"c","a":"a","d":2,"e":4}""")
   }
 
+
+  it should "not serialize ignored fields with @JsonIgnored" in {
+    val result = serialize(CaseClassWithIgnored("ignored","normal"))
+    result should be ("""{"normal":"normal"}""")
+  }
 }
