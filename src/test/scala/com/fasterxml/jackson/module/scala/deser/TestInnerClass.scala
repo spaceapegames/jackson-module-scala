@@ -1,7 +1,7 @@
 package com.fasterxml.jackson.module.scala.deser
 
 import org.scalatest.matchers.ShouldMatchers
-import org.scalatest.FlatSpec
+import org.scalatest.{Matchers, FlatSpec}
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
@@ -30,7 +30,7 @@ class Dog
 
 // Cribbed from the same named test in jackson-databind
 @RunWith(classOf[JUnitRunner])
-class TestInnerClass extends DeserializerTest with FlatSpec with ShouldMatchers {
+class TestInnerClass extends FlatSpec with DeserializerTest with Matchers {
 
   def module = DefaultScalaModule
 

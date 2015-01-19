@@ -2,8 +2,8 @@ package com.fasterxml.jackson.module.scala.deser
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import org.scalatest.FlatSpec
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.{FlatSpec, Matchers}
+
 import scala.collection.SortedMap
 import scala.collection.immutable.TreeMap
 
@@ -11,7 +11,7 @@ import scala.collection.immutable.TreeMap
  * @author Christopher Currie <ccurrie@impresys.com>
  */
 @RunWith(classOf[JUnitRunner])
-class SortedMapDeserializerTest extends DeserializerTest with FlatSpec with ShouldMatchers {
+class SortedMapDeserializerTest extends FlatSpec with DeserializerTest with Matchers {
 
   lazy val module = new SortedMapDeserializerModule {}
 

@@ -9,7 +9,7 @@ import com.fasterxml.jackson.module.scala.{DefaultScalaModule, JacksonModule}
 import com.fasterxml.jackson.annotation._
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.PropertyNamingStrategy
-import scala.reflect.BeanProperty
+import scala.beans.BeanProperty
 
 case class ConstructorTestCaseClass(intValue: Int, stringValue: String)
 
@@ -83,7 +83,7 @@ case class CaseClassWithIgnored(@JsonIgnore ignored: String, normal: String){
 }
 
 @RunWith(classOf[JUnitRunner])
-class CaseClassSerializerTest extends SerializerTest with FlatSpec with ShouldMatchers {
+class CaseClassSerializerTest extends FlatSpec with SerializerTest with ShouldMatchers {
 
   case class NestedClass(field: String)
 

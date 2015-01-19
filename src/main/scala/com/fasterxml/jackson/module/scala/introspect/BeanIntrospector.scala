@@ -44,7 +44,7 @@ object BeanIntrospector {
       paranamer.lookupParameterNames(ctor).map(NameTransformer.decode(_))
     }
 
-  def apply[T <: AnyRef](implicit mf: Manifest[_]): BeanDescriptor = apply[T](mf.erasure)
+  def apply[T <: AnyRef](implicit mf: Manifest[_]): BeanDescriptor = apply[T](mf.runtimeClass)
 
   def apply[T <: AnyRef](cls: Class[_]) = {
 
