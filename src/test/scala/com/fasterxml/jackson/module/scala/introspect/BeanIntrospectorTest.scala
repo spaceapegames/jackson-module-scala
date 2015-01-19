@@ -27,7 +27,7 @@ class MethodBean
 
 //adding @SerialVersionUID puts a public static final int field on the generated class
 //this field should be ignored
-@SerialVersionUID(uid = 8675309)
+@SerialVersionUID(8675309)
 case class SerialIDBean(field: String) {
   @transient val shouldBeExluded = 10
   @volatile var alsoExcluded = 20
