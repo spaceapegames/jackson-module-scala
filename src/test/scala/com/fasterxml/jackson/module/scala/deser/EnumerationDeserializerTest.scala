@@ -1,11 +1,12 @@
 package com.fasterxml.jackson.module.scala.deser
 
-import com.fasterxml.jackson.core.`type`.TypeReference
-import com.fasterxml.jackson.module.scala.{DefaultScalaModule, JsonScalaEnumeration, Weekday}
-import org.junit.runner.RunWith
+import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.FlatSpec
 import org.scalatest.junit.JUnitRunner
-import org.scalatest.matchers.ShouldMatchers
+import org.junit.runner.RunWith
+import scala.reflect.BeanProperty
+import com.fasterxml.jackson.module.scala.{JsonScalaEnumeration, DefaultScalaModule, Weekday}
+import com.fasterxml.jackson.core.`type`.TypeReference
 
 class EnumContainer {
 
@@ -16,7 +17,7 @@ class WeekdayType extends TypeReference[Weekday.type]
 case class AnnotatedEnumHolder(@JsonScalaEnumeration(classOf[WeekdayType]) weekday: Weekday.Weekday)
 
 @RunWith(classOf[JUnitRunner])
-class EnumerationDeserializerTest extends FlatSpec with DeserializerTest with ShouldMatchers {
+class EnumerationDeserializerTest extends DeserializerTest with FlatSpec with ShouldMatchers {
 
   lazy val module = DefaultScalaModule
 

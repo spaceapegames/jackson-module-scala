@@ -29,11 +29,11 @@ trait ScalaObjectMapper {
    *                     be "added" to target's annotations, overriding as necessary
    */
   final def addMixInAnnotations[Target: Manifest, MixinSource: Manifest]() {
-    addMixInAnnotations(manifest[Target].runtimeClass, manifest[MixinSource].runtimeClass)
+    addMixInAnnotations(manifest[Target].erasure, manifest[MixinSource].erasure)
   }
 
   final def findMixInClassFor[T: Manifest]: Class[_] = {
-    findMixInClassFor(manifest[T].runtimeClass)
+    findMixInClassFor(manifest[T].erasure)
   }
 
   /*
@@ -49,12 +49,12 @@ trait ScalaObjectMapper {
    */
   private[this] val typeCache: LoadingCache[Manifest[_], JavaType] =
     CacheBuilder.newBuilder().maximumSize(DEFAULT_CACHE_SIZE).build { m: Manifest[_] =>
-      val clazz = m.runtimeClass
+      val clazz = m.erasure
       if(isArray(clazz)) {
         //It looks like getting the component type is the best we can do, at
         //least if we also want to support 2.9.x - scala 2.10.x adds full
         //type info in the typeArguments field of an Array's manifest.
-        getTypeFactory.constructArrayType(m.runtimeClass.getComponentType)
+        getTypeFactory.constructArrayType(m.erasure.getComponentType)
       } else if(isMapLike(clazz)) {
         val typeArguments = m.typeArguments.map(constructType(_)).toArray
         if(typeArguments.length != 2) {
@@ -125,7 +125,7 @@ trait ScalaObjectMapper {
    * </pre>
    */
   def treeToValue[T: Manifest](n: TreeNode): T = {
-    treeToValue(n, manifest[T].runtimeClass).asInstanceOf[T]
+    treeToValue(n, manifest[T].erasure).asInstanceOf[T]
   }
 
   /*
@@ -145,7 +145,7 @@ trait ScalaObjectMapper {
    *         serializable)
    */
   def canSerialize[T: Manifest]: Boolean = {
-    canSerialize(manifest[T].runtimeClass)
+    canSerialize(manifest[T].erasure)
   }
 
   /**
@@ -208,7 +208,7 @@ trait ScalaObjectMapper {
    * serialize objects using specified JSON View (filter).
    */
   def writerWithView[T: Manifest]: ObjectWriter = {
-    writerWithView(manifest[T].runtimeClass)
+    writerWithView(manifest[T].erasure)
   }
 
   /**
@@ -241,7 +241,7 @@ trait ScalaObjectMapper {
    * deserialize objects using specified JSON View (filter).
    */
   def readerWithView[T: Manifest]: ObjectReader = {
-    readerWithView(manifest[T].runtimeClass)
+    readerWithView(manifest[T].erasure)
   }
 
   /*
@@ -280,7 +280,7 @@ trait ScalaObjectMapper {
    * @return Constructed JSON schema.
    */
   def generateJsonSchema[T: Manifest]: JsonSchema = {
-    generateJsonSchema(manifest[T].runtimeClass)
+    generateJsonSchema(manifest[T].erasure)
   }
 
   /**
@@ -295,7 +295,7 @@ trait ScalaObjectMapper {
    * @since 2.1
    */
   def acceptJsonFormatVisitor[T: Manifest](visitor: JsonFormatVisitorWrapper) {
-    acceptJsonFormatVisitor(manifest[T].runtimeClass, visitor)
+    acceptJsonFormatVisitor(manifest[T].erasure, visitor)
   }
 
   private def isArray(c: Class[_]): Boolean = {
