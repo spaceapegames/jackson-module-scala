@@ -14,7 +14,7 @@ case class PropertyDescriptor(name: String,
   if (List(field, getter).flatten.isEmpty) throw new IllegalArgumentException("One of field or getter must be defined.")
 
   def findAnnotation[A <: java.lang.annotation.Annotation](implicit mf: Manifest[A]): Option[A] = {
-    val cls = mf.runtimeClass.asInstanceOf[Class[A]]
+    val cls = mf.erasure.asInstanceOf[Class[A]]
     lazy val paramAnnotation = param flatMap { cp =>
       cp.constructor.getParameterAnnotations.apply(cp.index).find(_.getClass equals cls)
     }

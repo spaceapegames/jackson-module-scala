@@ -11,7 +11,7 @@ class WeekdayType extends TypeReference[Weekday.type]
 case class AnnotationHolder(@JsonScalaEnumeration(classOf[WeekdayType]) weekday: Weekday.Weekday)
 
 @RunWith(classOf[JUnitRunner])
-class EnumerationSerializerTest extends FlatSpec with SerializerTest with ShouldMatchers {
+class EnumerationSerializerTest extends SerializerTest with FlatSpec with ShouldMatchers {
 
   lazy val module = DefaultScalaModule
 

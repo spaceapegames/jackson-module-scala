@@ -30,7 +30,7 @@ class Methods {
 
 case class Constructors(plainField: Int = 0)
 
-@SerialVersionUID(8675309)
+@SerialVersionUID(uid = 8675309)
 case class SerialID(firstField: String, secondField: Int) {
   @transient var excluded = 10
   @volatile var alsoExcluded = "no"
@@ -41,7 +41,7 @@ class TestPropertiesCollector extends FlatSpec with ShouldMatchers {
 
   type FixtureParam = ObjectMapper
 
-  override def withFixture(test: OneArgTest) = {
+  def withFixture(test: OneArgTest) {
 
     val mapper = new ObjectMapper()
     mapper.registerModule(new JacksonModule with ScalaClassIntrospectorModule with ScalaValueInstantiatorsModule)

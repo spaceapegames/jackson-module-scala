@@ -42,7 +42,7 @@ class LongValueClass
 }
 
 @RunWith(classOf[JUnitRunner])
-class CaseClassDeserializerTest extends FlatSpec with DeserializerTest with ShouldMatchers {
+class CaseClassDeserializerTest extends DeserializerTest with FlatSpec with ShouldMatchers {
 
   def module = DefaultScalaModule
 

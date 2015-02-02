@@ -2,14 +2,15 @@ package com.fasterxml.jackson.module.scala.deser
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import org.scalatest.{Matchers, FlatSpec}
+import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.FlatSpec
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.fasterxml.jackson.datatype.joda.JodaModule
 
 private case class OptionalInt(x: Option[Int])
 
 @RunWith(classOf[JUnitRunner])
-class OptionWithJodaTimeDeserializerTest extends FlatSpec with DeserializerTest with Matchers {
+class OptionWithJodaTimeDeserializerTest extends DeserializerTest with FlatSpec with ShouldMatchers {
 
   def module = DefaultScalaModule
 

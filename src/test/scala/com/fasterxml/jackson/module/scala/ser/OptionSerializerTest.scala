@@ -1,13 +1,13 @@
 package com.fasterxml.jackson.module.scala.ser
 
-import com.fasterxml.jackson.annotation.{JsonInclude, JsonProperty}
-import com.fasterxml.jackson.module.scala.DefaultScalaModule
-import org.junit.runner.RunWith
 import org.scalatest.FlatSpec
-import org.scalatest.junit.JUnitRunner
 import org.scalatest.matchers.ShouldMatchers
-
-import scala.annotation.meta.getter
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
+import com.fasterxml.jackson.module.scala.DefaultScalaModule
+import com.fasterxml.jackson.annotation.{JsonProperty, JsonInclude}
+import annotation.target.getter
+import com.fasterxml.jackson.databind.annotation.{JsonSerialize, JsonDeserialize}
 
 class NonEmptyOptions {
 
@@ -27,7 +27,7 @@ case class OptionSchema(stringValue: Option[String])
  * Undocumented class.
  */
 @RunWith(classOf[JUnitRunner])
-class OptionSerializerTest extends FlatSpec with SerializerTest with ShouldMatchers {
+class OptionSerializerTest extends SerializerTest with FlatSpec with ShouldMatchers {
 
   lazy val module = DefaultScalaModule
 
