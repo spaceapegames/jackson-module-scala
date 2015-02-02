@@ -5,12 +5,12 @@ import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.FlatSpec
 import org.scalatest.junit.JUnitRunner
 
+import scala.annotation.meta.getter
 import scala.collection._
-import scala.reflect.BeanProperty
+import scala.beans.BeanProperty
 import com.fasterxml.jackson.annotation.{JsonInclude, JsonProperty}
 import scala.collection.immutable.ListMap
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import annotation.target.getter
 import com.fasterxml.jackson.databind.{SerializerProvider, JsonSerializer}
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
@@ -48,7 +48,7 @@ case class KeySerializerMap(
   keySerializerMap: Map[(String,String),Int] )
 
 @RunWith(classOf[JUnitRunner])
-class MapSerializerTest extends SerializerTest with FlatSpec with ShouldMatchers {
+class MapSerializerTest extends FlatSpec with SerializerTest with ShouldMatchers {
 
   lazy val module = DefaultScalaModule
 

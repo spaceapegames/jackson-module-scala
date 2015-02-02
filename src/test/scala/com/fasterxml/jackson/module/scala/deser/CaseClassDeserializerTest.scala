@@ -1,17 +1,13 @@
 package com.fasterxml.jackson.module.scala.deser
 
-import org.scalatest.FlatSpec
-import org.scalatest.matchers.ShouldMatchers
-import com.fasterxml.jackson.module.scala.{DefaultScalaModule, JacksonModule}
-import org.scalatest.junit.JUnitRunner
-import org.junit.runner.RunWith
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import com.fasterxml.jackson.databind.JsonMappingException
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.PropertyNamingStrategy
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.{JsonMappingException, ObjectMapper, PropertyNamingStrategy}
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.fasterxml.jackson.module.scala.DefaultScalaModule
+import org.junit.runner.RunWith
+import org.scalatest.FlatSpec
+import org.scalatest.junit.JUnitRunner
+import org.scalatest.matchers.ShouldMatchers
 
 case class ConstructorTestCaseClass(intValue: Int, stringValue: String)
 
@@ -42,7 +38,7 @@ class LongValueClass
 }
 
 @RunWith(classOf[JUnitRunner])
-class CaseClassDeserializerTest extends DeserializerTest with FlatSpec with ShouldMatchers {
+class CaseClassDeserializerTest extends FlatSpec with DeserializerTest with ShouldMatchers {
 
   def module = DefaultScalaModule
 

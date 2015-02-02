@@ -11,7 +11,7 @@ import com.fasterxml.jackson.core.`type`.TypeReference
  * @author Christopher Currie <ccurrie@impresys.com>
  */
 @RunWith(classOf[JUnitRunner])
-class TupleDeserializerTest extends DeserializerTest with FlatSpec with ShouldMatchers {
+class TupleDeserializerTest extends FlatSpec with DeserializerTest with ShouldMatchers {
 
   lazy val module = DefaultScalaModule
 
