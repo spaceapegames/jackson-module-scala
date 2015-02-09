@@ -76,8 +76,8 @@ class ScalaPropertiesCollector(config: MapperConfig[_],
             val name = ctorDescriptor.name
             val pn = _getPropertyName(ctorDescriptor)
             val explName = pn.optMap(_.getSimpleName).map(_.orIfEmpty(name))
-            val ignored = _hasIgnoreMarker(ctor.getParameter(i))
-            _addFieldCtor(name, ctor.getParameter(i), explName, ignored)
+
+            _addFieldCtor(name, ctor.getParameter(i), explName)
           case None => //nested classes have back reference to parent outer objects not for serialisation
         }
       }
@@ -105,9 +105,9 @@ class ScalaPropertiesCollector(config: MapperConfig[_],
     prop.addField(field, explName.orNull, visible, ignored)
   }
 
-  private def _addFieldCtor(implName: String, param: AnnotatedParameter, explName: Option[String], ignored: Boolean) {
+  private def _addFieldCtor(implName: String, param: AnnotatedParameter, explName: Option[String]) {
     val prop = _property(implName)
-    prop.addCtor(param, explName.orNull, true, ignored)
+    prop.addCtor(param, explName.orNull, true, false)
     creatorProperties += prop
   }
 
