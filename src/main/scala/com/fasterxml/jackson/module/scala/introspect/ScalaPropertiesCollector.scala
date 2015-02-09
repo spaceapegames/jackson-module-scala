@@ -62,24 +62,19 @@ class ScalaPropertiesCollector(config: MapperConfig[_],
     _creatorProperties.asScala
   }
 
+
   override def _addCreators() {
-    val ctors = classDef.getConstructors.asScala
-    ctors.foreach{ ctor =>
-      val paramDescriptors = _descriptor.properties.view.filter{ pd =>
-        pd.param.isDefined && pd.param.get.constructor == ctor.getAnnotated
-      }
+    lazy val ctors = classDef.getConstructors.asScala
+    _descriptor.properties.view.filter(_.param.isDefined).foreach { pd =>
+      val name = pd.name
+      val pn = _getPropertyName(pd)
+      val explName = pn.optMap(_.getSimpleName).map(_.orIfEmpty(name))
 
-      for( i <- 0 to (ctor.getParameterCount-1)){
-        //find the matching property name
-        paramDescriptors.find(_.param.get.index == i) match {
-          case Some(ctorDescriptor) =>
-            val name = ctorDescriptor.name
-            val pn = _getPropertyName(ctorDescriptor)
-            val explName = pn.optMap(_.getSimpleName).map(_.orIfEmpty(name))
-
-            _addFieldCtor(name, ctor.getParameter(i), explName)
-          case None => //nested classes have back reference to parent outer objects not for serialisation
-        }
+      //add the constructor param (if present)
+      //call to pd.param.get is safe due to filter above
+      val cp =  pd.param.get
+      ctors.find(_.getAnnotated == cp.constructor).foreach { annotatedConstructor =>
+        _addFieldCtor(name, annotatedConstructor.getParameter(cp.index), explName)
       }
     }
   }
